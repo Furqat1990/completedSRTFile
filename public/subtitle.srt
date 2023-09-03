@@ -1,0 +1,583 @@
+1
+00:00:00,005 --> 00:00:04,006
+- [Presenter] Unit testing requires isolation of the target code
+
+3
+00:00:04,006 --> 00:00:08,003
+However, due to the power of (faintly speaking) Modularity,
+
+
+00:00:08,003 --> 00:00:11,007
+pretty much, everything depends on everything.
+
+5
+00:00:11,007 --> 00:00:13,001
+How can we isolate our code,
+
+6
+00:00:13,001 --> 00:00:16,006
+so we only test the intended functionality?
+
+7
+00:00:16,006 --> 00:00:18,002
+There's a solution to this problem,
+
+8
+00:00:18,002 --> 00:00:19,008
+and it involves replacing
+
+9
+00:00:19,008 --> 00:00:23,000
+and inspecting code execution with test structures,
+
+10
+00:00:23,000 --> 00:00:27,004
+known as stubs, spies and mocks.
+
+11
+00:00:27,004 --> 00:00:28,005
+In this chapter,
+
+12
+00:00:28,005 --> 00:00:31,002
+we're going to start by discussing what Test Doubles are,
+
+13
+00:00:31,002 --> 00:00:34,004
+and how they can be used to replace code.
+
+14
+00:00:34,004 --> 00:00:36,003
+Then, we'll compare some techniques
+
+15
+00:00:36,003 --> 00:00:37,008
+for overriding dependencies
+
+16
+00:00:37,008 --> 00:00:40,009
+by manipulating the required cash.
+
+17
+00:00:40,009 --> 00:00:42,001
+With that foundation,
+
+18
+00:00:42,001 --> 00:00:44,009
+we'll apply these techniques to our testing.
+
+19
+00:00:44,009 --> 00:00:47,002
+We'll control the responses of methods,
+
+20
+00:00:47,002 --> 00:00:49,008
+observe interactions between components
+
+21
+00:00:49,008 --> 00:00:53,007
+and verify expected behavior of the code we're testing.
+
+22
+00:00:53,007 --> 00:00:54,008
+We'll do all of this,
+
+23
+00:00:54,008 --> 00:00:58,004
+without having to modify how our modules require code,
+
+24
+00:00:58,004 --> 00:01:00,008
+which is fantastic.
+
+25
+00:01:00,008 --> 00:01:03,000
+Let's start by discussing Test Doubles,
+
+26
+00:01:03,000 --> 00:01:05,001
+which are a special type of code.
+
+27
+00:01:05,001 --> 00:01:07,001
+What are they?
+
+28
+00:01:07,001 --> 00:01:08,009
+A Test Double is a replacement
+
+29
+00:01:08,009 --> 00:01:12,000
+for an arbitrary component of executable code,
+
+30
+00:01:12,000 --> 00:01:15,004
+like a module or a method.
+
+31
+00:01:15,004 --> 00:01:17,001
+A Test Double looks and behaves
+
+32
+00:01:17,001 --> 00:01:19,005
+in a similar way to what it replaces,
+
+33
+00:01:19,005 --> 00:01:22,009
+down to providing the same API.
+
+34
+00:01:22,009 --> 00:01:24,004
+However, the functionality
+
+35
+00:01:24,004 --> 00:01:28,004
+is typically a much simplified version of the original.
+
+36
+00:01:28,004 --> 00:01:30,009
+Test Doubles can have deterministic behavior
+
+37
+00:01:30,009 --> 00:01:32,006
+and do the same expected thing
+
+38
+00:01:32,006 --> 00:01:34,005
+each time it's interacted with,
+
+39
+00:01:34,005 --> 00:01:39,004
+such as always responding with a particular value or error.
+
+40
+00:01:39,004 --> 00:01:42,006
+Test Doubles are typically configured during the test setup,
+
+41
+00:01:42,006 --> 00:01:46,000
+rather than in the test spec itself.
+
+42
+00:01:46,000 --> 00:01:48,009
+- Why should we bother using a Test Double?
+
+43
+00:01:48,009 --> 00:01:52,001
+First of all, unit testing requires isolation
+
+44
+00:01:52,001 --> 00:01:54,003
+and a Test Double allows us replace code
+
+45
+00:01:54,003 --> 00:01:57,001
+in order to isolate the target.
+
+46
+00:01:57,001 --> 00:01:58,009
+Test Doubles, provide a consistent
+
+47
+00:01:58,009 --> 00:02:02,006
+and completely expected response every time.
+
+48
+00:02:02,006 --> 00:02:04,009
+Finally, Test Doubles are fast,
+
+49
+00:02:04,009 --> 00:02:09,007
+because they typically contain little to no executable code.
+
+50
+00:02:09,007 --> 00:02:11,008
+Gerard Meszaros as part of his book,
+
+51
+00:02:11,008 --> 00:02:13,006
+on "xUnit Test Patterns"
+
+52
+00:02:13,006 --> 00:02:16,000
+Wrote a fantastic definition of Test Doubles
+
+53
+00:02:16,000 --> 00:02:17,007
+and the variations.
+
+54
+00:02:17,007 --> 00:02:23,004
+They include, test stubs, test spies, mock objects,
+
+55
+00:02:23,004 --> 00:02:26,007
+fake objects, and dummy objects.
+
+56
+00:02:26,007 --> 00:02:30,005
+We'll look at each in turn along with use cases.
+
+57
+00:02:30,005 --> 00:02:32,002
+A test stub is a Test Double
+
+58
+00:02:32,002 --> 00:02:34,004
+that simulates the behavior of a component
+
+59
+00:02:34,004 --> 00:02:37,007
+by taking complete control over the response.
+
+60
+00:02:37,007 --> 00:02:41,008
+A stub won't respond to a request unless programmed to,
+
+61
+00:02:41,008 --> 00:02:44,009
+which is good for controlling execution.
+
+62
+00:02:44,009 --> 00:02:48,002
+A stab temporarily replaces a real component,
+
+63
+00:02:48,002 --> 00:02:52,000
+so the original can always be restored as needed.
+
+64
+00:02:52,000 --> 00:02:53,004
+In terms of usefulness,
+
+65
+00:02:53,004 --> 00:02:56,007
+a stub can be used to verify indirect input.
+
+66
+00:02:56,007 --> 00:02:59,009
+For example, you can fake a database query response
+
+67
+00:02:59,009 --> 00:03:03,001
+by specifying a hard-coded response.
+
+68
+00:03:03,001 --> 00:03:04,009
+You could also disable logging
+
+69
+00:03:04,009 --> 00:03:07,003
+by replacing the logger with an empty stub,
+
+70
+00:03:07,003 --> 00:03:10,007
+so calls to log just do nothing.
+
+71
+00:03:10,007 --> 00:03:13,003
+A test spy like its name implies,
+
+72
+00:03:13,003 --> 00:03:16,007
+observes interactions with tested code.
+
+73
+00:03:16,007 --> 00:03:19,009
+Primarily, spies are used to count the number of times
+
+74
+00:03:19,009 --> 00:03:21,004
+a component was called,
+
+75
+00:03:21,004 --> 00:03:25,006
+along with how it was called and what it responded with.
+
+76
+00:03:25,006 --> 00:03:26,007
+In this manner,
+
+77
+00:03:26,007 --> 00:03:31,002
+spies verify the indirect outputs of components.
+
+78
+00:03:31,002 --> 00:03:34,004
+A test spy can either be added to an existing method
+
+79
+00:03:34,004 --> 00:03:36,000
+in order to see how it behaves
+
+80
+00:03:36,000 --> 00:03:39,000
+or replace it completely like a stub.
+
+81
+00:03:39,000 --> 00:03:40,009
+For example, a spy can determine
+
+82
+00:03:40,009 --> 00:03:45,007
+if the validator was called once with transformed values.
+
+83
+00:03:45,007 --> 00:03:47,007
+Mock objects are interesting.
+
+84
+00:03:47,007 --> 00:03:51,002
+A mock verifies behavior, specifically the expectations
+
+85
+00:03:51,002 --> 00:03:53,006
+around how something is called.
+
+86
+00:03:53,006 --> 00:03:57,004
+This includes with what arguments and how many times.
+
+87
+00:03:57,004 --> 00:03:59,006
+If those expectations are not met,
+
+88
+00:03:59,006 --> 00:04:03,001
+then when verified, a mock will fail the test.
+
+89
+00:04:03,001 --> 00:04:06,007
+In its purest form, mocks do not return anything
+
+90
+00:04:06,007 --> 00:04:09,005
+which differentiates it from a stub.
+
+91
+00:04:09,005 --> 00:04:10,007
+You'll want to use a mock
+
+92
+00:04:10,007 --> 00:04:12,004
+when you want to verify the method
+
+93
+00:04:12,004 --> 00:04:14,009
+in which something was being used,
+
+94
+00:04:14,009 --> 00:04:16,008
+for example, you'd use a mock
+
+95
+00:04:16,008 --> 00:04:21,001
+when verifying that saving only calls the database once.
+
+96
+00:04:21,001 --> 00:04:22,006
+There're some definite similarities
+
+97
+00:04:22,006 --> 00:04:25,002
+between mock objects and test spies.
+
+98
+00:04:25,002 --> 00:04:27,001
+And the demonstrations later in this chapter
+
+99
+00:04:27,001 --> 00:04:30,000
+should help clarify the difference.
+
+100
+00:04:30,000 --> 00:04:33,005
+A fake object is a working implementation of a component
+
+101
+00:04:33,005 --> 00:04:37,008
+that takes a shortcut, typically, for performance reasons.
+
+102
+00:04:37,008 --> 00:04:40,004
+Fake objects are not usable in production,
+
+103
+00:04:40,004 --> 00:04:43,005
+and are intended only for testing purposes.
+
+104
+00:04:43,005 --> 00:04:46,004
+For example, you could replace a database implementation
+
+105
+00:04:46,004 --> 00:04:50,001
+with a simple in-memory array with the same API.
+
+106
+00:04:50,001 --> 00:04:51,004
+That would be faster,
+
+107
+00:04:51,004 --> 00:04:54,008
+but you'd want to use a real database in production.
+
+108
+00:04:54,008 --> 00:04:58,002
+The final variation of a Test Double is a dummy object,
+
+109
+00:04:58,002 --> 00:05:01,007
+which just provides a parameter for a tested method.
+
+110
+00:05:01,007 --> 00:05:03,007
+For example, a dummy object can be used
+
+111
+00:05:03,007 --> 00:05:05,005
+to test reservation validation
+
+112
+00:05:05,005 --> 00:05:08,006
+using arbitrary input that doesn't change.
+
+113
+00:05:08,006 --> 00:05:09,009
+We've already done this,
+
+114
+00:05:09,009 --> 00:05:12,009
+just without the label of dummy object.
+
+115
+00:05:12,009 --> 00:05:16,005
+Let's review and compare the different Test Doubles.
+
+116
+00:05:16,005 --> 00:05:19,004
+A test stub verifies indirect inputs
+
+117
+00:05:19,004 --> 00:05:22,005
+by providing a controlled response.
+
+118
+00:05:22,005 --> 00:05:25,008
+A test spy records indirect outputs
+
+119
+00:05:25,008 --> 00:05:28,004
+by reporting on how the request was made
+
+120
+00:05:28,004 --> 00:05:30,004
+for later verification.
+
+121
+00:05:30,004 --> 00:05:33,002
+A mock object verifies indirect outputs
+
+122
+00:05:33,002 --> 00:05:34,008
+by recording how it's used
+
+123
+00:05:34,008 --> 00:05:37,001
+in order for expectations to check
+
+124
+00:05:37,001 --> 00:05:39,009
+to see if it's used incorrectly.
+
+125
+00:05:39,009 --> 00:05:43,007
+A fake object just runs faster with less functionality,
+
+126
+00:05:43,007 --> 00:05:48,004
+and a dummy object specifies values used for testing.
+
+127
+00:05:48,004 --> 00:05:50,003
+If you're interested in learning more
+
+128
+00:05:50,003 --> 00:05:53,001
+about the philosophy and implementations,
+
+129
+00:05:53,001 --> 00:05:56,004
+check out the articles on xunitpatterns.com
+
+130
+00:05:56,004 --> 00:05:59,001
+and martinfowler.com.
+
+131
+00:05:59,001 --> 00:06:00,007
+They both go into greater detail
+
+132
+00:06:00,007 --> 00:06:04,004
+and provide thorough explanations of each concept.
+
+133
+00:06:04,004 --> 00:06:09,007
+Within the context of just everything is considered a mock,
+
+134
+00:06:09,007 --> 00:06:13,006
+a jest mock can be used to stub out functionality,
+
+135
+00:06:13,006 --> 00:06:18,000
+a jest mock can spy to keep track of usage.
+
+136
+00:06:18,000 --> 00:06:22,008
+Jest mocks provide expectations about how the code was used.
+
+137
+00:06:22,008 --> 00:06:24,007
+Jest mocks include fake timers
+
+138
+00:06:24,007 --> 00:06:27,007
+for manipulating time-based events
+
+139
+00:06:27,007 --> 00:06:29,002
+Dummy objects aren't included,
+
+140
+00:06:29,002 --> 00:06:32,003
+because you don't need a framework to use them.
+
+141
+00:06:32,003 --> 00:06:35,002
+So, why go through the trouble of defining each,
+
+142
+00:06:35,002 --> 00:06:38,004
+if jest conflates the terminology?
+
+143
+00:06:38,004 --> 00:06:40,001
+Each of these terms can be found
+
+144
+00:06:40,001 --> 00:06:42,006
+throughout jest's documentation,
+
+145
+00:06:42,006 --> 00:06:46,003
+and they are used in other frameworks as well.
+
+146
+00:06:46,003 --> 00:06:47,006
+With that in mind,
+
+147
+00:06:47,006 --> 00:06:51,000
+how can we use jest to mock a single function.
