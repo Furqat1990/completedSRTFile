@@ -10,15 +10,9 @@ describe("FileProcess", () => {
 
     const fullPath = path.join(process.cwd(), 'public/subtitle.srt');
 
-    function isEmptyFs(fs, path) {
-        it('should return error if fs module is empty', () => {
-            expect(() => fileProcess.isExist(fs, path)).toThrow('Fs should not be empty');
-        });
-    }
-
-    function isEmptyPath(fs, path) {
-        it('should return error if path module is empty', () => {
-            expect(() => fileProcess.isExist(fs, path)).toThrow('Path should not be empty');
+    function isEmptyModule(fs, path, moduleName) {
+        it(`should return error if ${moduleName} module is empty`, () => {
+            expect(() => fileProcess.isExist(fs, path)).toThrow(`${moduleName} should not be empty`);
         });
     }
 
@@ -29,8 +23,8 @@ describe("FileProcess", () => {
     }
 
     describe("isExistFile", () => {
-        isEmptyFs('', path);
-        isEmptyPath(fs, '');
+        isEmptyModule('', path, 'Fs');
+        isEmptyModule(fs, '', 'Path');
 
         it("should return undefined if file is exist", () => {
             const mock = jest.spyOn(fileProcess, 'isExist');
@@ -43,7 +37,7 @@ describe("FileProcess", () => {
     });
 
     describe('Read a .srt file', () => {
-        isEmptyFs('', path);
+        isEmptyModule('', path, 'Fs');
         isEmptyFullPath(fs, '')
 
         it("should read a file and return file content", () => {
@@ -57,8 +51,8 @@ describe("FileProcess", () => {
     });
 
     describe('Write to a new .srt file', () => {
-        isEmptyFs('', path);
-        isEmptyPath(fs, '');
+        isEmptyModule('', path, 'Fs');
+        isEmptyModule(fs, '', 'Path');
         isEmptyFullPath(fs, '');
 
         it('should write a file and log the path', () => {
