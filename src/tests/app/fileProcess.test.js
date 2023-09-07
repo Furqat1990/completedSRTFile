@@ -1,9 +1,13 @@
-const fs = require('fs');
-const path = require('path');
+let fs = require('fs');
+let path = require('path');
 
 const fileProcess = require('../../app/fileProcess');
 
 describe("FileProcess", () => {
+    beforeEach(() => {
+        fs = jest.createMockFromModule('fs');
+    });
+
     afterEach(() => {
         jest.clearAllMocks(); 
     });
@@ -25,15 +29,26 @@ describe("FileProcess", () => {
     describe("isExistFile", () => {
         isEmptyModule('', path, 'Fs');
         isEmptyModule(fs, '', 'Path');
+        
+        it("should return true if a file is exist", () => {
+            jest.spyOn(fs, 'existsSync').mockReturnValue(true);
 
-        it("should return undefined if file is exist", () => {
-            const mock = jest.spyOn(fileProcess, 'isExist');
+            let mock = jest.spyOn(fileProcess, 'isExist');
 
-            expect(fileProcess.isExist(fs, path, fullPath)).toBeUndefined();
+            expect(fileProcess.isExist(fs, path, fullPath)).toBe(true);
             expect(mock).toHaveBeenCalledTimes(1);
             expect(mock).toHaveBeenCalledWith(fs, path, fullPath);
-            expect(mock).toHaveReturnedWith(undefined);
-        });      
+        });
+        
+        it("should return throw an error if file isn't exist", () => {
+            jest.spyOn(fs, 'existsSync').mockReturnValue(false);
+
+            let mock = jest.spyOn(fileProcess, 'isExist');
+
+            expect(() => fileProcess.isExist(fs, path, fullPath)).toThrow('Subtitle file does not exist');
+            expect(mock).toHaveBeenCalledTimes(1);
+            expect(mock).toHaveBeenCalledWith(fs, path, fullPath);
+        }); 
     });
 
     describe('Read a .srt file', () => {
@@ -51,11 +66,12 @@ describe("FileProcess", () => {
     });
 
     describe('Write to a new .srt file', () => {
+
         isEmptyModule('', path, 'Fs');
         isEmptyModule(fs, '', 'Path');
         isEmptyFullPath(fs, '');
 
-        it('should write a file and log the path', () => {
+        it('should write to a file and log the path', () => {
             const textContent = "Hello world";
             const outputPath = path.join(path.dirname(fullPath), 'completedSrt.srt');
             const mockFs = jest.spyOn(fs, 'writeFileSync');

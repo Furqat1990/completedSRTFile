@@ -10,6 +10,8 @@ class FileProcess {
         const fileExist = fs.existsSync(fullPath);
 
         if (!fileExist) throw new Error('Subtitle file does not exist');
+
+        return true;
     }
 
     read(fs, fullPath) {
