@@ -1,400 +1,180 @@
 1
-00:00:00,005-->00:00:08,003
-- [Presenter] Unit testing requires isolation of the target code However, due to the power of (faintly speaking) Modularity,
+00:00:00,930-->00:00:05,070
+-: Hey everyone, and welcome to Microsoft Power BI for business intelligence.
 
 2
-00:00:08,003-->00:00:11,007
-pretty much, everything depends on everything.
+00:00:05,070-->00:00:09,630
+This course is a number one bestseller and a masterclass in Power BI.
 
 3
-00:00:11,007-->00:00:13,001
-How can we isolate our code,
+00:00:09,630-->00:00:18,420
+You'll learn from top instructors on the Maven Analytics team and put your skills to the test with hands-on project and unique real-world assignments.
 
 4
-00:00:13,001-->00:00:16,006
-so we only test the intended functionality?
+00:00:18,420-->00:00:23,730
+Throughout the course, you'll play the role of a business intelligence analyst for AdventureWorks cycles.
 
 5
-00:00:16,006-->00:00:18,002
-There's a solution to this problem,
+00:00:23,730-->00:00:30,090
+Your role is to transform raw data into reports and dashboards to help the management team track KPIs,
 
 6
-00:00:18,002-->00:00:23,000
-and it involves replacing and inspecting code execution with test structures,
+00:00:30,090-->00:00:31,890
+compare regional performance,
 
 7
-00:00:23,000-->00:00:27,004
-known as stubs, spies and mocks.
+00:00:31,890-->00:00:33,570
+analyze product-level trends,
 
 8
-00:00:27,004-->00:00:28,005
-In this chapter,
+00:00:33,570-->00:00:36,360
+and identify high-value customers.
 
 9
-00:00:28,005-->00:00:31,002
-we're going to start by discussing what Test Doubles are,
+00:00:36,360-->00:00:37,193
+But don't worry,
 
 10
-00:00:31,002-->00:00:34,004
-and how they can be used to replace code.
+00:00:37,193-->00:00:40,380
+we'll be here to guide you along every step of the way.
 
 11
-00:00:34,004-->00:00:40,009
-Then, we'll compare some techniques for overriding dependencies by manipulating the required cash.
+00:00:40,380-->00:00:45,120
+We'll start by introducing Power BI Desktop and the key stages of the BI workflow.
 
 12
-00:00:40,009-->00:00:42,001
-With that foundation,
+00:00:45,120-->00:00:48,900
+Data prep, modeling, analysis, and visualization.
 
 13
-00:00:42,001-->00:00:44,009
-we'll apply these techniques to our testing.
+00:00:48,900-->00:00:54,990
+From there, we'll connect and shape our data with Power Query and explore common connectors, storage modes,
 
 14
-00:00:44,009-->00:00:47,002
-We'll control the responses of methods,
+00:00:54,990-->00:00:58,710
+profiling tools, table transformations, and more.
 
 15
-00:00:47,002-->00:00:53,007
-observe interactions between components and verify expected behavior of the code we're testing.
+00:00:58,710-->00:01:01,170
+Next, we'll dive into relational data modeling,
 
 16
-00:00:53,007-->00:00:54,008
-We'll do all of this,
+00:01:01,170-->00:01:03,990
+introduce topics like cardinality, normalization,
 
 17
-00:00:54,008-->00:00:58,004
-without having to modify how our modules require code,
+00:01:03,990-->00:01:06,030
+filter flow, and star schemas,
 
 18
-00:00:58,004-->00:01:00,008
-which is fantastic.
+00:01:06,030-->00:01:09,240
+and build our AdventureWorks model from the ground up.
 
 19
-00:01:00,008-->00:01:03,000
-Let's start by discussing Test Doubles,
+00:01:09,240-->00:01:10,590
+With our model configured,
 
 20
-00:01:03,000-->00:01:05,001
-which are a special type of code.
+00:01:10,590-->00:01:16,230
+we'll create calculated columns and measures using data analysis expressions, or DAX.
 
 21
-00:01:05,001-->00:01:07,001
-What are they?
+00:01:16,230-->00:01:18,570
+We'll discuss row and filter context,
 
 22
-00:01:07,001-->00:01:12,000
-A Test Double is a replacement for an arbitrary component of executable code,
+00:01:18,570-->00:01:20,370
+review formula syntax,
 
 23
-00:01:12,000-->00:01:15,004
-like a module or a method.
+00:01:20,370-->00:01:22,800
+and practice applying tools like filter functions,
 
 24
-00:01:15,004-->00:01:19,005
-A Test Double looks and behaves in a similar way to what it replaces,
+00:01:22,800-->00:01:25,500
+iterators, and time intelligence patterns.
 
 25
-00:01:19,005-->00:01:22,009
-down to providing the same API.
+00:01:25,500-->00:01:30,600
+Finally, we'll bring our data to life with professional-quality reports and dashboards.
 
 26
-00:01:22,009-->00:01:28,004
-However, the functionality is typically a much simplified version of the original.
+00:01:30,600-->00:01:33,270
+We'll review visualization best practices,
 
 27
-00:01:28,004-->00:01:34,005
-Test Doubles can have deterministic behavior and do the same expected thing each time it's interacted with,
+00:01:33,270-->00:01:35,370
+build and format basic charts,
 
 28
-00:01:34,005-->00:01:39,004
-such as always responding with a particular value or error.
+00:01:35,370-->00:01:37,710
+explore powerful AI visuals,
 
 29
-00:01:39,004-->00:01:42,006
-Test Doubles are typically configured during the test setup,
+00:01:37,710-->00:01:41,910
+and add interactivity with bookmarks, slicer panels and parameters,
 
 30
-00:01:42,006-->00:01:46,000
-rather than in the test spec itself.
+00:01:41,910-->00:01:44,850
+custom tooltips, and report navigation.
 
 31
-00:01:46,000-->00:01:48,009
-- Why should we bother using a Test Double?
+00:01:44,850-->00:01:45,683
+Last but not least,
 
 32
-00:01:48,009-->00:01:57,001
-First of all, unit testing requires isolation and a Test Double allows us replace code in order to isolate the target.
+00:01:45,683-->00:01:50,040
+we'll preview some of Power BIs native and external optimization tools,
 
 33
-00:01:57,001-->00:02:02,006
-Test Doubles, provide a consistent and completely expected response every time.
+00:01:50,040-->00:01:52,080
+including the performance analyzer,
 
 34
-00:02:02,006-->00:02:04,009
-Finally, Test Doubles are fast,
+00:01:52,080-->00:01:54,630
+optimization presets, and more.
 
 35
-00:02:04,009-->00:02:09,007
-because they typically contain little to no executable code.
+00:01:54,630-->00:02:01,590
+So if you're a data professional or aspiring analyst looking to learn the number one business intelligence platform on the market,
 
 36
-00:02:09,007-->00:02:11,008
-Gerard Meszaros as part of his book,
+00:02:01,590-->00:02:03,330
+you've come to the right place.
 
 37
-00:02:11,008-->00:02:17,007
-on "xUnit Test Patterns" Wrote a fantastic definition of Test Doubles and the variations.
+00:02:03,330-->00:02:08,009
+With more than 50,000 perfect five-star reviews from students around the world,
 
 38
-00:02:17,007-->00:02:23,004
-They include, test stubs, test spies, mock objects,
+00:02:08,009-->00:02:10,380
+this is the course you've been looking for.
 
 39
-00:02:23,004-->00:02:26,007
-fake objects, and dummy objects.
+00:02:10,380-->00:02:14,610
+Sign up today and get immediate access to high-quality video content,
 
 40
-00:02:26,007-->00:02:30,005
-We'll look at each in turn along with use cases.
+00:02:14,610-->00:02:16,170
+downloadable resources,
 
 41
-00:02:30,005-->00:02:37,007
-A test stub is a Test Double that simulates the behavior of a component by taking complete control over the response.
+00:02:16,170-->00:02:18,090
+course projects and assignments,
 
 42
-00:02:37,007-->00:02:41,008
-A stub won't respond to a request unless programmed to,
+00:02:18,090-->00:02:20,370
+and one-on-one expert support,
 
 43
-00:02:41,008-->00:02:44,009
-which is good for controlling execution.
+00:02:20,370-->00:02:24,150
+all backed by a 30-day, 100% guarantee.
 
 44
-00:02:44,009-->00:02:48,002
-A stab temporarily replaces a real component,
+00:02:24,150-->00:02:27,288
+We've got a lot to cover, so let's dive in.
 
 45
-00:02:48,002-->00:02:52,000
-so the original can always be restored as needed.
-
-46
-00:02:52,000-->00:02:53,004
-In terms of usefulness,
-
-47
-00:02:53,004-->00:02:56,007
-a stub can be used to verify indirect input.
-
-48
-00:02:56,007-->00:03:03,001
-For example, you can fake a database query response by specifying a hard-coded response.
-
-49
-00:03:03,001-->00:03:07,003
-You could also disable logging by replacing the logger with an empty stub,
-
-50
-00:03:07,003-->00:03:10,007
-so calls to log just do nothing.
-
-51
-00:03:10,007-->00:03:13,003
-A test spy like its name implies,
-
-52
-00:03:13,003-->00:03:16,007
-observes interactions with tested code.
-
-53
-00:03:16,007-->00:03:21,004
-Primarily, spies are used to count the number of times a component was called,
-
-54
-00:03:21,004-->00:03:25,006
-along with how it was called and what it responded with.
-
-55
-00:03:25,006-->00:03:26,007
-In this manner,
-
-56
-00:03:26,007-->00:03:31,002
-spies verify the indirect outputs of components.
-
-57
-00:03:31,002-->00:03:39,000
-A test spy can either be added to an existing method in order to see how it behaves or replace it completely like a stub.
-
-58
-00:03:39,000-->00:03:45,007
-For example, a spy can determine if the validator was called once with transformed values.
-
-59
-00:03:45,007-->00:03:47,007
-Mock objects are interesting.
-
-60
-00:03:47,007-->00:03:53,006
-A mock verifies behavior, specifically the expectations around how something is called.
-
-61
-00:03:53,006-->00:03:57,004
-This includes with what arguments and how many times.
-
-62
-00:03:57,004-->00:03:59,006
-If those expectations are not met,
-
-63
-00:03:59,006-->00:04:03,001
-then when verified, a mock will fail the test.
-
-64
-00:04:03,001-->00:04:09,005
-In its purest form, mocks do not return anything which differentiates it from a stub.
-
-65
-00:04:09,005-->00:04:14,009
-You'll want to use a mock when you want to verify the method in which something was being used,
-
-66
-00:04:14,009-->00:04:21,001
-for example, you'd use a mock when verifying that saving only calls the database once.
-
-67
-00:04:21,001-->00:04:25,002
-There're some definite similarities between mock objects and test spies.
-
-68
-00:04:25,002-->00:04:30,000
-And the demonstrations later in this chapter should help clarify the difference.
-
-69
-00:04:30,000-->00:04:37,008
-A fake object is a working implementation of a component that takes a shortcut, typically, for performance reasons.
-
-70
-00:04:37,008-->00:04:40,004
-Fake objects are not usable in production,
-
-71
-00:04:40,004-->00:04:43,005
-and are intended only for testing purposes.
-
-72
-00:04:43,005-->00:04:50,001
-For example, you could replace a database implementation with a simple in-memory array with the same API.
-
-73
-00:04:50,001-->00:04:51,004
-That would be faster,
-
-74
-00:04:51,004-->00:04:54,008
-but you'd want to use a real database in production.
-
-75
-00:04:54,008-->00:04:58,002
-The final variation of a Test Double is a dummy object,
-
-76
-00:04:58,002-->00:05:01,007
-which just provides a parameter for a tested method.
-
-77
-00:05:01,007-->00:05:08,006
-For example, a dummy object can be used to test reservation validation using arbitrary input that doesn't change.
-
-78
-00:05:08,006-->00:05:09,009
-We've already done this,
-
-79
-00:05:09,009-->00:05:12,009
-just without the label of dummy object.
-
-80
-00:05:12,009-->00:05:16,005
-Let's review and compare the different Test Doubles.
-
-81
-00:05:16,005-->00:05:22,005
-A test stub verifies indirect inputs by providing a controlled response.
-
-82
-00:05:22,005-->00:05:30,004
-A test spy records indirect outputs by reporting on how the request was made for later verification.
-
-83
-00:05:30,004-->00:05:39,009
-A mock object verifies indirect outputs by recording how it's used in order for expectations to check to see if it's used incorrectly.
-
-84
-00:05:39,009-->00:05:43,007
-A fake object just runs faster with less functionality,
-
-85
-00:05:43,007-->00:05:48,004
-and a dummy object specifies values used for testing.
-
-86
-00:05:48,004-->00:05:53,001
-If you're interested in learning more about the philosophy and implementations,
-
-87
-00:05:53,001-->00:05:59,001
-check out the articles on xunitpatterns.com and martinfowler.com.
-
-88
-00:05:59,001-->00:06:04,004
-They both go into greater detail and provide thorough explanations of each concept.
-
-89
-00:06:04,004-->00:06:09,007
-Within the context of just everything is considered a mock,
-
-90
-00:06:09,007-->00:06:13,006
-a jest mock can be used to stub out functionality,
-
-91
-00:06:13,006-->00:06:18,000
-a jest mock can spy to keep track of usage.
-
-92
-00:06:18,000-->00:06:22,008
-Jest mocks provide expectations about how the code was used.
-
-93
-00:06:22,008-->00:06:29,002
-Jest mocks include fake timers for manipulating time-based events Dummy objects aren't included,
-
-94
-00:06:29,002-->00:06:32,003
-because you don't need a framework to use them.
-
-95
-00:06:32,003-->00:06:35,002
-So, why go through the trouble of defining each,
-
-96
-00:06:35,002-->00:06:38,004
-if jest conflates the terminology?
-
-97
-00:06:38,004-->00:06:42,006
-Each of these terms can be found throughout jest's documentation,
-
-98
-00:06:42,006-->00:06:46,003
-and they are used in other frameworks as well.
-
-99
-00:06:46,003-->00:06:47,006
-With that in mind,
-
-100
-00:06:47,006-->00:06:51,000
-how can we use jest to mock a single function.
+00:02:27,288-->00:02:30,121
+(uplifting music)
 

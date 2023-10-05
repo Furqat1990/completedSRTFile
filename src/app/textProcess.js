@@ -49,12 +49,14 @@ class TextProcess {
     compliteSentence(arr) {
         validate.arrayArg(arr);
 
+        console.log(arr);
+
         let tempArr = [];
         let num = 1;
         let isExtant = false;
 
         for (let i = 0; i < arr.length; i++) {
-            if (arr[i].txt.match(/[\.\.\.\,\?\!]$/g)) {
+            if (arr[i].txt.match(/[\.\.\.\,\?\!]$/g) || i === arr.length - 1) {
                 tempArr.push({
                     num,
                     start_time: arr[i].start_time,
