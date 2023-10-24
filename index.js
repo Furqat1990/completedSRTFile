@@ -10,7 +10,8 @@ fileProcess.isExist(fs, path, fullPath);
 
 const readFile = fileProcess.read(fs, fullPath);
 const splited = textProcess.parsingText(readFile);
-const objFromTextAndTime = textProcess.splitToTextAndTime(splited);
+const parsedByRowStr = textProcess.parsingByRowStr(splited);
+const objFromTextAndTime = textProcess.splitToTextAndTime(parsedByRowStr);
 const convertedObjToSrtDates = textProcess.convertObjToSrtData(objFromTextAndTime);
 const comletedSentences = textProcess.compliteSentence(convertedObjToSrtDates);
 const srtText = textProcess.convertToText(comletedSentences);

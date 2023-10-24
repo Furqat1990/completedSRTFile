@@ -26,6 +26,7 @@ class FileProcess {
         fs.writeFileSync(outputPath, text);
 
         console.log(`.srt file is created in \u001b[42m${outputPath}\u001b[0m`);
+        console.log(`Date: \u001b[46m${ new Date() }\u001b[0m`);
     }
 }
 

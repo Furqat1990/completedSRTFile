@@ -1,264 +1,788 @@
 1
-00:00:00,930 --> 00:00:03,450
--: Hey everyone, and welcome to Microsoft Power BI
+00:00:00,330 --> 00:00:01,163
+Narrator: All right.
 
 2
-00:00:03,450 --> 00:00:05,070
-for business intelligence.
+00:00:01,163 --> 00:00:02,940
+So, we've talked quite a bit about filters
 
 3
-00:00:05,070 --> 00:00:07,110
-This course is a number one bestseller
+00:00:02,940 --> 00:00:04,530
+in the context of our data model
 
 4
-00:00:07,110 --> 00:00:09,630
-and a masterclass in Power BI.
+00:00:04,530 --> 00:00:08,520
+and how filters can transmit through table relationships.
 
 5
-00:00:09,630 --> 00:00:11,280
-You'll learn from top instructors
+00:00:08,520 --> 00:00:09,840
+But now we're gonna talk
 
 6
-00:00:11,280 --> 00:00:12,870
-on the Maven Analytics team
+00:00:09,840 --> 00:00:13,653
+about filter context and how it impacts DAX measures.
 
 7
-00:00:12,870 --> 00:00:14,580
-and put your skills to the test
+00:00:14,520 --> 00:00:16,650
+So, remember the definition of a measure.
 
 8
-00:00:14,580 --> 00:00:18,420
-with hands-on project and unique real-world assignments.
+00:00:16,650 --> 00:00:19,740
+It's evaluated based on filter context, which means
 
 9
-00:00:18,420 --> 00:00:19,920
-Throughout the course, you'll play the role
+00:00:19,740 --> 00:00:22,344
+that those measures recalculate whenever the fields
 
 10
-00:00:19,920 --> 00:00:21,720
-of a business intelligence analyst
+00:00:22,344 --> 00:00:24,630
+or filters around them change.
 
 11
-00:00:21,720 --> 00:00:23,730
-for AdventureWorks cycles.
+00:00:24,630 --> 00:00:28,170
+Consider this matrix view on the left-side of the screen.
 
 12
-00:00:23,730 --> 00:00:25,980
-Your role is to transform raw data
+00:00:28,170 --> 00:00:31,350
+If we pinpoint one cell of that matrix,
 
 13
-00:00:25,980 --> 00:00:27,540
-into reports and dashboards
+00:00:31,350 --> 00:00:33,810
+we can understand exactly what filter context
 
 14
-00:00:27,540 --> 00:00:30,090
-to help the management team track KPIs,
+00:00:33,810 --> 00:00:36,240
+is being passed to that cell and therefore,
 
 15
-00:00:30,090 --> 00:00:31,890
-compare regional performance,
+00:00:36,240 --> 00:00:39,480
+understand exactly how that measure is being calculated.
 
 16
-00:00:31,890 --> 00:00:33,570
-analyze product-level trends,
+00:00:39,480 --> 00:00:41,940
+So for this example, highlighted cell,
 
 17
-00:00:33,570 --> 00:00:36,360
-and identify high-value customers.
+00:00:41,940 --> 00:00:44,550
+we're calculating a measure called orders
 
 18
-00:00:36,360 --> 00:00:37,193
-But don't worry,
+00:00:44,550 --> 00:00:48,210
+and it's evaluating based on the following filter context.
 
 19
-00:00:37,193 --> 00:00:40,380
-we'll be here to guide you along every step of the way.
+00:00:48,210 --> 00:00:49,260
+The product name column
 
 20
-00:00:40,380 --> 00:00:42,780
-We'll start by introducing Power BI Desktop
+00:00:49,260 --> 00:00:52,333
+from the product table is equal to mountain tire tube
 
 21
-00:00:42,780 --> 00:00:45,120
-and the key stages of the BI workflow.
+00:00:52,333 --> 00:00:55,170
+because that's the filter context that's passed
 
 22
-00:00:45,120 --> 00:00:48,900
-Data prep, modeling, analysis, and visualization.
+00:00:55,170 --> 00:00:59,010
+to the cell from the matrix row label, right?
 
 23
-00:00:48,900 --> 00:00:50,010
-From there, we'll connect
+00:00:59,010 --> 00:01:01,770
+And then it's calculating our total orders
 
 24
-00:00:50,010 --> 00:00:52,110
-and shape our data with Power Query
+00:01:01,770 --> 00:01:03,990
+based on that product context.
 
 25
-00:00:52,110 --> 00:00:54,990
-and explore common connectors, storage modes,
+00:01:03,990 --> 00:01:06,480
+So, this is pretty intuitive on the surface.
 
 26
-00:00:54,990 --> 00:00:58,710
-profiling tools, table transformations, and more.
+00:01:06,480 --> 00:01:07,680
+This allows the measure,
 
 27
-00:00:58,710 --> 00:01:01,170
-Next, we'll dive into relational data modeling,
+00:01:07,680 --> 00:01:11,190
+this total orders measured to return our order quantity
 
 28
-00:01:01,170 --> 00:01:03,990
-introduce topics like cardinality, normalization,
+00:01:11,190 --> 00:01:13,980
+for each product specifically
 
 29
-00:01:03,990 --> 00:01:06,030
-filter flow, and star schemas,
+00:01:13,980 --> 00:01:17,160
+or whatever the matrix row and column label dictates.
 
 30
-00:01:06,030 --> 00:01:09,240
-and build our AdventureWorks model from the ground up.
+00:01:17,160 --> 00:01:19,920
+So this could be years, it could be countries,
 
 31
-00:01:09,240 --> 00:01:10,590
-With our model configured,
+00:01:19,920 --> 00:01:22,740
+product categories, customer name, you know,
 
 32
-00:01:10,590 --> 00:01:12,870
-we'll create calculated columns and measures
+00:01:22,740 --> 00:01:25,860
+any other column or dimension that you could add in here.
 
 33
-00:01:12,870 --> 00:01:16,230
-using data analysis expressions, or DAX.
+00:01:25,860 --> 00:01:27,032
+So, again, pretty straightforward
 
 34
-00:01:16,230 --> 00:01:18,570
-We'll discuss row and filter context,
+00:01:27,032 --> 00:01:28,680
+but what might not be quite
 
 35
-00:01:18,570 --> 00:01:20,370
-review formula syntax,
+00:01:28,680 --> 00:01:31,230
+as straightforward is the fact that total
 
 36
-00:01:20,370 --> 00:01:22,800
-and practice applying tools like filter functions,
+00:01:31,230 --> 00:01:34,830
+or grand total values are not simply calculated by summing
 
 37
-00:01:22,800 --> 00:01:25,500
-iterators, and time intelligence patterns.
+00:01:34,830 --> 00:01:38,130
+or averaging or whatever the aggregation method is.
 
 38
-00:01:25,500 --> 00:01:27,480
-Finally, we'll bring our data to life
+00:01:38,130 --> 00:01:39,780
+The values above, right?
 
 39
-00:01:27,480 --> 00:01:30,600
-with professional-quality reports and dashboards.
+00:01:39,780 --> 00:01:43,200
+They're calculated as their own unique measures.
 
 40
-00:01:30,600 --> 00:01:33,270
-We'll review visualization best practices,
+00:01:43,200 --> 00:01:46,252
+So in this case, since we are calculating orders
 
 41
-00:01:33,270 --> 00:01:35,370
-build and format basic charts,
+00:01:46,252 --> 00:01:48,722
+for a specific product in the total row,
 
 42
-00:01:35,370 --> 00:01:37,710
-explore powerful AI visuals,
+00:01:48,722 --> 00:01:51,500
+we're essentially taking that filter context
 
 43
-00:01:37,710 --> 00:01:38,970
-and add interactivity
+00:01:51,500 --> 00:01:52,920
+of the product name
 
 44
-00:01:38,970 --> 00:01:41,910
-with bookmarks, slicer panels and parameters,
+00:01:52,920 --> 00:01:55,025
+and just ignoring it, right?
+At a total row,
 
 45
-00:01:41,910 --> 00:01:44,850
-custom tooltips, and report navigation.
+00:01:55,025 --> 00:02:00,025
+there is no specific or individual product filter context.
 
 46
-00:01:44,850 --> 00:01:45,683
-Last but not least,
+00:02:00,217 --> 00:02:02,820
+So it's a bit of a nuanced concept,
 
 47
-00:01:45,683 --> 00:01:47,670
-we'll preview some of Power BIs native
+00:02:02,820 --> 00:02:05,460
+but it's a very important thing to understand.
 
 48
-00:01:47,670 --> 00:01:50,040
-and external optimization tools,
+00:02:05,460 --> 00:02:08,850
+And it's that each measure within a report behaves
 
 49
-00:01:50,040 --> 00:01:52,080
-including the performance analyzer,
+00:02:08,850 --> 00:02:11,820
+like it's being calculated on its own island
 
 50
-00:01:52,080 --> 00:01:54,630
-optimization presets, and more.
+00:02:11,820 --> 00:02:13,170
+and it calculates according
 
 51
-00:01:54,630 --> 00:01:56,220
-So if you're a data professional
+00:02:13,170 --> 00:02:15,491
+to its own unique filter context,
 
 52
-00:01:56,220 --> 00:01:57,750
-or aspiring analyst looking
+00:02:15,491 --> 00:02:19,860
+even totals and grand total rows and values.
 
 53
-00:01:57,750 --> 00:02:00,600
-to learn the number one business intelligence platform
+00:02:19,860 --> 00:02:22,800
+So as a pro tip here, if you're struggling
 
 54
-00:02:00,600 --> 00:02:01,590
-on the market,
+00:02:22,800 --> 00:02:25,110
+to understand the filter context or trying
 
 55
-00:02:01,590 --> 00:02:03,330
-you've come to the right place.
+00:02:25,110 --> 00:02:28,260
+to understand the filter context impacting a visual,
 
 56
-00:02:03,330 --> 00:02:06,450
-With more than 50,000 perfect five-star reviews
+00:02:28,260 --> 00:02:31,810
+you can click on the header icon to see a list of filters
 
 57
-00:02:06,450 --> 00:02:08,009
-from students around the world,
+00:02:31,810 --> 00:02:35,918
+and slicers, which are all part of that filter context
 
 58
-00:02:08,009 --> 00:02:10,380
-this is the course you've been looking for.
+00:02:35,918 --> 00:02:38,400
+that's impacting the visual.
 
 59
-00:02:10,380 --> 00:02:11,220
-Sign up today
+00:02:38,400 --> 00:02:40,590
+So here in this example, we can see
 
 60
-00:02:11,220 --> 00:02:14,610
-and get immediate access to high-quality video content,
+00:02:40,590 --> 00:02:44,010
+a customer metric selection, income level and year
 
 61
-00:02:14,610 --> 00:02:16,170
-downloadable resources,
+00:02:44,010 --> 00:02:46,710
+are all affecting our donut chart visual.
 
 62
-00:02:16,170 --> 00:02:18,090
-course projects and assignments,
+00:02:46,710 --> 00:02:49,560
+As I was learning about filter context for the first time,
 
 63
-00:02:18,090 --> 00:02:20,370
-and one-on-one expert support,
+00:02:49,560 --> 00:02:51,960
+one of the most helpful things for me was working
 
 64
-00:02:20,370 --> 00:02:24,150
-all backed by a 30-day, 100% guarantee.
+00:02:51,960 --> 00:02:54,330
+through a number of different examples.
 
 65
-00:02:24,150 --> 00:02:27,288
-We've got a lot to cover, so let's dive in.
+00:02:54,330 --> 00:02:56,883
+So, let's take a minute and we'll do that now.
 
 66
-00:02:27,288 --> 00:02:30,121
-(uplifting music)
+00:02:57,930 --> 00:03:00,540
+So here, you've got a sample view of a dashboard.
 
+67
+00:03:00,540 --> 00:03:01,470
+This is actually a piece
+
+68
+00:03:01,470 --> 00:03:03,270
+of a dashboard that we're gonna be building
+
+69
+00:03:03,270 --> 00:03:05,190
+in the database section of this course.
+
+70
+00:03:05,190 --> 00:03:06,840
+And obviously, there's a ton
+
+71
+00:03:06,840 --> 00:03:08,580
+of different information here, right?
+
+72
+00:03:08,580 --> 00:03:12,150
+We've got cards and donut charts and line charts
+
+73
+00:03:12,150 --> 00:03:16,530
+with trends, and we've got matrix visuals and some slicers.
+
+74
+00:03:16,530 --> 00:03:18,720
+And there's just a whole bunch of stuff going on here.
+
+75
+00:03:18,720 --> 00:03:21,540
+And one thing to pay specific attention to
+
+76
+00:03:21,540 --> 00:03:23,010
+is this page level filter
+
+77
+00:03:23,010 --> 00:03:27,990
+and the filter pane that says year is 2021 or 2022.
+
+78
+00:03:27,990 --> 00:03:30,630
+Now we're gonna talk about what these filters mean
+
+79
+00:03:30,630 --> 00:03:32,513
+and how they work, but for now,
+
+80
+00:03:32,513 --> 00:03:35,370
+all you really need to know is that this filter applies
+
+81
+00:03:35,370 --> 00:03:38,092
+to every visual, every number,
+
+82
+00:03:38,092 --> 00:03:40,830
+everything that you see on this entire page.
+
+83
+00:03:40,830 --> 00:03:42,510
+This is a page level filter.
+
+84
+00:03:42,510 --> 00:03:44,850
+It impacts everything on the page.
+
+85
+00:03:44,850 --> 00:03:45,900
+So from here,
+
+86
+00:03:45,900 --> 00:03:48,690
+we can actually pinpoint individual measure values
+
+87
+00:03:48,690 --> 00:03:52,530
+to understand what filter context is being passed to them.
+
+88
+00:03:52,530 --> 00:03:54,123
+This first case in the top-left here,
+
+89
+00:03:54,123 --> 00:03:57,960
+we're evaluating a measure named revenue per customer.
+
+90
+00:03:57,960 --> 00:04:02,960
+And the filter context is that year equals 2021 or 2022.
+
+91
+00:04:03,540 --> 00:04:06,240
+Again, that's coming from our page level filter.
+
+92
+00:04:06,240 --> 00:04:08,400
+So with that filter context in mind,
+
+93
+00:04:08,400 --> 00:04:12,840
+the DAX calculation for revenue per customer evaluates
+
+94
+00:04:12,840 --> 00:04:15,150
+and spits out the result that we can see here.
+
+95
+00:04:15,150 --> 00:04:17,339
+In this case, we see that average revenue
+
+96
+00:04:17,339 --> 00:04:21,329
+per customer is $1,074.
+
+97
+00:04:21,329 --> 00:04:23,250
+Let's look at another example here.
+
+98
+00:04:23,250 --> 00:04:24,930
+So, now we're not looking
+
+99
+00:04:24,930 --> 00:04:27,330
+at an actual numerical value, right?
+
+100
+00:04:27,330 --> 00:04:30,204
+We're looking at a tool tip that's been generated as part
+
+101
+00:04:30,204 --> 00:04:35,010
+of a numerical value that's trended in a line chart, right?
+
+102
+00:04:35,010 --> 00:04:38,010
+So, this line chart is currently showing
+
+103
+00:04:38,010 --> 00:04:40,950
+the total customer's measure trended by day
+
+104
+00:04:40,950 --> 00:04:43,906
+but the tool tip is highlighting a specific day.
+
+105
+00:04:43,906 --> 00:04:46,890
+So, we're adding additional filter context
+
+106
+00:04:46,890 --> 00:04:49,500
+of September 26th, 2021,
+
+107
+00:04:49,500 --> 00:04:51,930
+just to generate the total customer value
+
+108
+00:04:51,930 --> 00:04:53,550
+within that tool tip.
+
+109
+00:04:53,550 --> 00:04:55,350
+So you might be thinking at this point, "Hey,
+
+110
+00:04:55,350 --> 00:04:57,900
+what happened to that year filter context?"
+
+111
+00:04:57,900 --> 00:05:00,089
+Well, it's still there, but in this case,
+
+112
+00:05:00,089 --> 00:05:03,600
+the more granular filter context of day wins out
+
+113
+00:05:03,600 --> 00:05:07,710
+to show total customers only for September 26th.
+
+114
+00:05:07,710 --> 00:05:10,530
+All right, so moving down to our donut chart,
+
+115
+00:05:10,530 --> 00:05:13,110
+we're evaluating total orders here, and again,
+
+116
+00:05:13,110 --> 00:05:17,460
+we've got that same 2021, 2022-year filter context.
+
+117
+00:05:17,460 --> 00:05:21,420
+The chart here is breaking down total orders by occupation.
+
+118
+00:05:21,420 --> 00:05:23,880
+So, in this particular highlighted cell
+
+119
+00:05:23,880 --> 00:05:26,460
+or segment of the donut chart, the second piece
+
+120
+00:05:26,460 --> 00:05:29,610
+of the filter context is that the occupation field
+
+121
+00:05:29,610 --> 00:05:33,450
+and the customer table equals skilled manual.
+
+122
+00:05:33,450 --> 00:05:34,776
+Moving over to the matrix visual,
+
+123
+00:05:34,776 --> 00:05:37,860
+here's an interesting one too, because in this case,
+
+124
+00:05:37,860 --> 00:05:41,820
+we're looking at a total row for a measure called revenue.
+
+125
+00:05:41,820 --> 00:05:44,340
+So, even though this value lives in a matrix
+
+126
+00:05:44,340 --> 00:05:47,790
+that's broken down by customer names, because this measure,
+
+127
+00:05:47,790 --> 00:05:51,235
+this little island cell needs to calculate the total,
+
+128
+00:05:51,235 --> 00:05:53,640
+we're basically calculating orders
+
+129
+00:05:53,640 --> 00:05:57,150
+in the absence of a specific customer filter.
+
+130
+00:05:57,150 --> 00:06:00,330
+Our filter context for this total is calendar year,
+
+131
+00:06:00,330 --> 00:06:02,730
+again, as 2021 or 2022.
+
+132
+00:06:02,730 --> 00:06:04,867
+But here, what we're actually doing is we're saying,
+
+133
+00:06:04,867 --> 00:06:07,667
+"I want you to return the total but filter
+
+134
+00:06:07,667 --> 00:06:10,560
+based on the top 100 customers
+
+135
+00:06:10,560 --> 00:06:12,900
+when we sort by total orders."
+
+136
+00:06:12,900 --> 00:06:15,683
+So, this total value is showing the total revenue
+
+137
+00:06:15,683 --> 00:06:18,570
+for our top 100 customers.
+
+138
+00:06:18,570 --> 00:06:20,760
+It's important to understand that even though
+
+139
+00:06:20,760 --> 00:06:25,350
+that total line doesn't have a customer-specific filter,
+
+140
+00:06:25,350 --> 00:06:27,870
+it is returning based on the filter
+
+141
+00:06:27,870 --> 00:06:30,900
+of the top 100 customers.
+
+142
+00:06:30,900 --> 00:06:33,894
+Up next here, we've got another example of a card visual
+
+143
+00:06:33,894 --> 00:06:36,570
+and this time we're showing total revenue.
+
+144
+00:06:36,570 --> 00:06:40,470
+But what's neat here is that we've added the top customer
+
+145
+00:06:40,470 --> 00:06:43,680
+by revenue filter context to return the revenue-specific
+
+146
+00:06:43,680 --> 00:06:45,270
+to that customer, right?
+
+147
+00:06:45,270 --> 00:06:48,690
+So for here, it's actually grabbing filter context
+
+148
+00:06:48,690 --> 00:06:52,260
+where the customer full name equals Mr. Maurice Shan, right?
+
+149
+00:06:52,260 --> 00:06:55,770
+Because that's in our top customers by revenue above.
+
+150
+00:06:55,770 --> 00:06:58,170
+And here, where we see Mr. Maurice Shan,
+
+151
+00:06:58,170 --> 00:06:59,599
+this is another card visual
+
+152
+00:06:59,599 --> 00:07:02,730
+but we're actually using the customer full-name
+
+153
+00:07:02,730 --> 00:07:06,000
+calculated column, and then applying filters to produce
+
+154
+00:07:06,000 --> 00:07:09,630
+a single name based on additional filter context.
+
+155
+00:07:09,630 --> 00:07:12,810
+So, we've got that same year page level filter
+
+156
+00:07:12,810 --> 00:07:15,450
+but we're adding onto that a filter
+
+157
+00:07:15,450 --> 00:07:19,590
+for our top one customer based on the total revenue.
+
+158
+00:07:19,590 --> 00:07:22,200
+And what's cool is you can actually verify this
+
+159
+00:07:22,200 --> 00:07:25,170
+from the matrix visual that Mr. Maurice Shan
+
+160
+00:07:25,170 --> 00:07:27,960
+is our top revenue driving customer.
+
+161
+00:07:27,960 --> 00:07:29,778
+So hopefully, these examples are helpful.
+
+162
+00:07:29,778 --> 00:07:32,880
+I imagine that you're thinking to yourself, you know,
+
+163
+00:07:32,880 --> 00:07:35,250
+it's all pretty straightforward, pretty intuitive,
+
+164
+00:07:35,250 --> 00:07:38,100
+but the thing is, it does get a bit more complicated
+
+165
+00:07:38,100 --> 00:07:39,600
+and a bit more interesting.
+
+166
+00:07:39,600 --> 00:07:41,850
+And to be honest, these views
+
+167
+00:07:41,850 --> 00:07:44,220
+on this page aren't static views.
+
+168
+00:07:44,220 --> 00:07:46,549
+This is an interactive dynamic dashboard
+
+169
+00:07:46,549 --> 00:07:48,740
+with a bunch of different visuals.
+
+170
+00:07:48,740 --> 00:07:52,440
+And what I mean by that is a user could drill
+
+171
+00:07:52,440 --> 00:07:56,310
+into different occupations within this donut chart, right?
+
+172
+00:07:56,310 --> 00:07:58,510
+So, if they were to drill into skilled manual,
+
+173
+00:07:58,510 --> 00:08:00,873
+that filter context is going to be added
+
+174
+00:08:00,873 --> 00:08:04,320
+to all of the other visuals that we've talked about.
+
+175
+00:08:04,320 --> 00:08:06,660
+It's gonna be added to all the visuals that we didn't talk
+
+176
+00:08:06,660 --> 00:08:08,640
+about that are on this page, right?
+
+177
+00:08:08,640 --> 00:08:10,980
+So every single measure, everything
+
+178
+00:08:10,980 --> 00:08:14,169
+on this page is going to have an updated filter context
+
+179
+00:08:14,169 --> 00:08:17,690
+based on that selection of skilled manual.
+
+180
+00:08:17,690 --> 00:08:19,980
+And now, let's say you wanted to look
+
+181
+00:08:19,980 --> 00:08:24,540
+at a specific income level based on the occupation type.
+
+182
+00:08:24,540 --> 00:08:27,810
+So then, if you were to drill into average income as well,
+
+183
+00:08:27,810 --> 00:08:30,090
+that's another piece of filter context
+
+184
+00:08:30,090 --> 00:08:31,170
+that is going to be added
+
+185
+00:08:31,170 --> 00:08:35,220
+to each one of these visuals around the page.
+
+186
+00:08:35,220 --> 00:08:36,871
+So, as you can probably tell,
+
+187
+00:08:36,871 --> 00:08:39,390
+it can get quite a bit more sophisticated
+
+188
+00:08:39,390 --> 00:08:41,159
+and much more complicated
+
+189
+00:08:41,159 --> 00:08:42,750
+and that's why it's really important
+
+190
+00:08:42,750 --> 00:08:45,180
+for us to really nail down these fundamentals
+
+191
+00:08:45,180 --> 00:08:47,760
+and understand exactly what's going on.
+
+192
+00:08:47,760 --> 00:08:49,230
+So, we're gonna talk through a number
+
+193
+00:08:49,230 --> 00:08:52,080
+of examples as we continue writing DAX functions.
+
+194
+00:08:52,080 --> 00:08:54,330
+And then this will really come into play in a number
+
+195
+00:08:54,330 --> 00:08:56,160
+of different ways later on in the course
+
+196
+00:08:56,160 --> 00:08:59,040
+when we actually start building visuals and reports.
+
+197
+00:08:59,040 --> 00:09:01,743
+So stay tuned, we've got some great stuff ahead.

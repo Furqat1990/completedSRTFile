@@ -4,8 +4,24 @@ class TextProcess {
     parsingText(text) {
         validate.textArg(text);
 
-        let splitToParagraph = text.split(/[\r\n|\n]/).filter(line => line !== '');
-        return splitToParagraph;
+        return text.split(/[\r\n|\n]/).filter(line => line !== '');
+    }
+
+    parsingByRowStr(arr) {
+        validate.arrayArg(arr);
+
+        let isExtant = false;
+
+        for (let i = 0; i < arr.length - 1; i++) {
+            if (arr[i].match(/[A-Za-z]/g) && arr[i + 1].match(/[A-Za-z]/g)) {
+                arr[i] = arr[i] + " " + arr[i + 1];
+                arr.splice(i + 1, 1);
+                isExtant = true;
+            }
+        }
+
+        if (isExtant) return this.parsingByRowStr(arr);
+        return arr;
     }
 
     splitToTextAndTime(arr) {
@@ -31,6 +47,7 @@ class TextProcess {
         validate.objectArg(obj);
 
         const { txt, start_time, finish_time } = obj;
+
         let tempArr = [];
         if (txt.length !== start_time.length ||
             start_time.length !== finish_time.length) 
@@ -48,8 +65,6 @@ class TextProcess {
 
     compliteSentence(arr) {
         validate.arrayArg(arr);
-
-        console.log(arr);
 
         let tempArr = [];
         let num = 1;
