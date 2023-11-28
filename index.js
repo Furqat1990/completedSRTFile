@@ -12,8 +12,8 @@ const readFile = fileProcess.read(fs, fullPath);
 const splited = textProcess.parsingText(readFile);
 const parsedByRowStr = textProcess.parsingByRowStr(splited);
 const objFromTextAndTime = textProcess.splitToTextAndTime(parsedByRowStr);
-const convertedObjToSrtDates = textProcess.convertObjToSrtData(objFromTextAndTime);
-const comletedSentences = textProcess.compliteSentence(convertedObjToSrtDates);
+const convertedObjToSrtDatas = textProcess.convertObjToSrtData(objFromTextAndTime);
+const comletedSentences = textProcess.compliteSentence(convertedObjToSrtDatas);
 const srtText = textProcess.convertToText(comletedSentences);
 
 fileProcess.write(fs, path, fullPath, srtText);

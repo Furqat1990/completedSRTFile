@@ -31,15 +31,15 @@ class TextProcess {
         let finish_time = [];
         let txt = [];
 
-        arr.forEach(item => {
-            if (item.match(/[A-Za-z]/g)) {
-                txt.push(item.replace("‫", ""));
-            } else if (item.includes('-->')) {
-                start_time.push(item.split('-->')[0].trim());
-                finish_time.push(item.split('-->')[1].trim());
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].match(/[A-Za-z]/g) || 
+               (i != 0 && arr[i-1].includes("-->") && arr[i].match(/[0-9]+/g))) { // checking for number on text
+                txt.push(arr[i].replace("‫", ""));
+            } else if (arr[i].includes('-->')) {
+                start_time.push(arr[i].split('-->')[0].trim());
+                finish_time.push(arr[i].split('-->')[1].trim());
             }
-        });
-
+        }
         return { start_time, finish_time, txt }
     }
 
